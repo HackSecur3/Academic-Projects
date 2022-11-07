@@ -1,0 +1,193 @@
+import java.util.Scanner;
+
+public class Sections {
+    static int gClassSize; // the global variable that contains the class size
+    static Scanner gIN = new Scanner(System.in);// user's input
+    static double[] gGrades = new double[101]; // global array used to hold grades
+
+    public static double[] swapValues(int f, int t) { // the method where the grades will be able to swap.
+        double temp = 0.0; // this is the temporary variable that will be given the value of the grade being swapped, and give it back to the grade that the user chose to swap to.
+        temp = gGrades[f];
+        gGrades[f] = gGrades[t];
+        gGrades[t] = temp;
+
+
+        return gGrades;
+    }
+
+
+    public static double[] swapGrades() { // this is the method for swapping grades.
+        int indexTo = 0; // the variable that holds the selected index and what not to choose/ cannot choose.
+        int indexFrom = gClassSize - 1; // the variable that holds the end of the index
+        System.out.print("Enter the index from  " + "(" + indexTo + " to " + indexFrom + ")  : ");
+        System.out.print(indexTo = gIN.nextInt()); // prints the index
+        System.out.println();
+        while ((indexTo > indexFrom) || (indexTo < 0)) { // if the indexTo is a value that is greater than the array or is less than 0, then it puts it in the while loop.
+            System.out.println("Value, out of range, please try again");
+            System.out.print("Enter the index from  " + "(0" + " to " + indexFrom + ")  : ");
+            System.out.print(indexTo = gIN.nextInt());
+            System.out.println();
+        }
+        System.out.print("Enter the index to (0 to " + indexFrom + ") that is not " + indexTo + " : ");
+        System.out.print(indexFrom = gIN.nextInt());
+        System.out.println();
+        while ((indexFrom == indexTo) || (indexFrom < 0) || (indexFrom > gClassSize - 1)) { // if the index inputted matches the conditions then it will ask again.
+            System.out.print("Enter the index to (0 to " + (gClassSize - 1) + ") that is not " + indexTo + " : ");
+            System.out.print(indexFrom = gIN.nextInt());
+            System.out.println();
+        }
+        swapValues(indexTo, indexFrom); // calls the swapGrades method to swap the values.
+
+        return gGrades;
+    }
+
+    
+    public static double[] addModifyGrade(double[] gGrades) { // this is the method that modifies the grades
+        int i = 0;
+        int j = gClassSize - 1;
+        double[] grades1 = new double[gClassSize];
+        System.out.print("Enter the index " + "(0 to " + j + ") : ");
+        System.out.print(i = gIN.nextInt()); // takes input for index
+        System.out.println();
+        while ((i > j) || (i < 0)) { // makes sure that the index is in intended range.
+            System.out.println("Value, out of range, please try again");
+            System.out.print("Enter the index " + "(0 to " + j + ") : ");
+            System.out.print(i = gIN.nextInt());
+            System.out.println();
+        }
+        System.out.println("The current value of the grade in index" + " " + i + " is : " + gGrades[i]);
+        System.out.print("Enter the grade you want to assign (0.00 - 100.00) : ");
+        System.out.print(grades1[i] = gIN.nextDouble());
+        System.out.println();
+        while ((grades1[i] > 100.00) || grades1[i] < 0.00) { // makes sure if grade is not in intended range then asks for it again.
+            System.out.println("Value, out of range, please try again");
+            System.out.println("The current value of the grade in index" + " " + i + " is : " + gGrades[i]);
+            System.out.print("Enter the grade you want to assign (0.00 - 100.00) : ");
+            System.out.print(grades1[i] = gIN.nextDouble());// asks for input again because it is not in range.
+            System.out.println();
+            if((gGrades[i] < 100) || (gGrades[i] > 0)) {
+                break;
+            }
+        }
+        gGrades[i] = grades1[i];
+
+        System.out.println();
+        return gGrades;
+    }
+    
+    
+
+    public static double[] listGrades(double[] grades, int gClassSize) { //
+        int i;
+        System.out.println("LIST OF GRADES"); // the title
+        for (i = 0; i < gClassSize; ++i) {
+            grades[i] = gGrades[i];
+            System.out.println("Grade" + "[" + i + "] : " + grades[i]); // prints out the list of grades
+        }
+
+
+        return grades;
+    }
+
+
+    public static char getGradesLetter(char letter) { // the method where the number of grades in the letter would be returned.
+        int i = 0;
+        int c = 0;
+        for(i = 0; i < gClassSize;++i) { // it is a loop to check each grade in the array and then adding a value for that grade.
+            if ((gGrades[i] >= 60) && (gGrades[i] < 70) && (letter == 'D')) { 
+                ++c;
+            }
+            if ((gGrades[i] >= 70) && (gGrades[i] < 80) && (letter == 'C')) {
+                ++c;
+            }
+            if ((gGrades[i] >= 80) && (gGrades[i] < 90) && (letter == 'B')) {
+                ++c;
+            }
+            if ((gGrades[i] >= 90) && (gGrades[i] <= 100) && (letter == 'A')) {
+                ++c;
+            }
+            if ((gGrades[i] < 60) && (letter == 'F') && (gGrades[i] > 0.00)) {
+                ++c;
+            }
+        }
+        System.out.print(c); // prints out the number of grades for letter
+            return 0;
+    }
+    
+
+    
+    public static double[] report(double[] gGrades) { // this is the method to display the report basically the amount of grades per letter.
+            char str='F';
+            int j = 0;
+            int k =0;
+            int total = 0;
+            System.out.println("GRADES REPORT");
+            for(int i = 0; i < gClassSize; ++i) { // used to call for each letter
+                System.out.print(str + " : ");
+                getGradesLetter(str); // calls the getGradesLetter method.
+                System.out.println();
+                if (str == 'F') { // this used because if you subract character F once it will go to E so that is why the if statement is there to be able to subract twice only when the variable is str == F
+                    --str;
+                }
+                --str;
+                if (str == '@') { // the loop will break after A gets printed out because the character after A is @.
+                    System.out.println();
+                    break;
+                }
+            }
+            return gGrades;
+
+        }
+
+
+
+
+
+    
+    
+    
+
+
+
+
+    public static void main(String[] args) {
+        int i; // loop variable
+        int num; // used as the variable to choose options
+        System.out.println("UTSA - Fall2021 - CS1083 - Section 002 - Project 2 - written by Navtej Dharmapuri Thirumala");
+       gClassSize = gIN.nextInt();
+        System.out.print("Please, enter the class size : " + gClassSize);// user input for classSize
+        while(gClassSize > 100) { // makes sure that class size is below 100
+            System.out.println("Value out of range");
+            System.out.print("Please, enter the class size : ");
+            System.out.print(gClassSize=gIN.nextInt());
+  
+        }
+        num = 1;
+       while(num!=0){ // as a long as num doesn't equal 0 when the user chooses the options the loop will run, this is where the main menu will pull up and can be selected by the user.
+         System.out.println();
+         System.out.println("MAIN MENU");
+            System.out.println("0 - Exit, 1 - List, 2 - Report, 3 - Add/Modify, 4 - Swap Grades");
+            System.out.print("Select an option : ");
+            System.out.print(num=gIN.nextInt());
+            System.out.println();
+            if( num == 1) {
+                listGrades(gGrades,gClassSize); // calls the grade list
+            }
+            if(num == 2) {
+                report(gGrades); // calls the report for input 2
+            }
+            if(num==3){
+addModifyGrade(gGrades); // calls modifygrade for input 3
+            }
+            if(num ==4) { //calls swapGrades for input 4
+                swapGrades();
+
+            }
+            if((num >= 5) || (num < 0)){ // if input larger than 5 and smaller than 0 prints a statement
+                System.out.println("Value, out of range, please try again");
+            }
+            }
+        System.out.println("Thank you for using the grades program! Bye!"); // this is what prints when 0 gets called.
+        
+    }
+}
