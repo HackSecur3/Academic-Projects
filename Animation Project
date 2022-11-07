@@ -1,0 +1,169 @@
+import java.util.Scanner;
+import java.awt.*;
+
+
+public class Animation{
+    static Scanner in = new Scanner(System.in);
+    static  int numofShapes=0;;// userinput number of shapes 
+    static int numofTimes=0; // number of times the shape is going to move
+    static String[] storeShapes=new String[20]; // it stores the shape that is being inputed
+    static int[] sizeofShape=new int[20];// stores the width and height of each shape
+    static String[] colors=new String[20]; // stores the colors for each shape
+    static int[] direction = new int[20]; // stores the direction for each shape(0,2,4,6) are the choices)
+    static int[] speed=new int[20]; /// stores the speed that is up to 10
+    static int[] x=new int[20]; // stores the x values for each shape
+    static int[] y = new int[20]; // stores the y values for each shape
+
+    public static void showShapesMoving(DrawingPanel panel){
+        for(int i =0;i < numofTimes;++i){ // it does the number of times that the shapes need to move
+            showShapes(false,panel); // it calls the showShapes method and then set no color method
+            changePositions(panel); // it calls the change positions method so that the shapes can move
+            showShapes(true,panel); // it calls the showShapes method and then the graphicssetColor method
+            panel.sleep(100); // delay of 1 second
+
+        }
+    }
+
+    public static void changePositions(DrawingPanel panel){
+        for( int i =0; i < numofShapes;i++){
+            if(direction[i]== 0){ // if the condition of direction is equaling t0 0
+                x[i]=x[i]-speed[i]; // shape moves to the left
+
+            }
+            if(direction[i]==2){
+                y[i]=y[i]-speed[i]; // shape moves up 
+
+            }
+            if(direction[i]==4){
+                x[i]=x[i]+speed[i]; // shape moves right
+            }
+            if(direction[i]==6){
+                y[i]=y[i]+speed[i]; // shape moves down
+
+            }
+        }
+    }
+
+    public static void showCircle(DrawingPanel panel, int i,boolean fal){
+        Graphics pen = panel.getGraphics(); // initalizes getGraphics()
+        pen.fillOval(x[i],y[i],sizeofShape[i],sizeofShape[i]); // it creates the circle depending on the width and height
+        if(fal==true){
+            pen.setColor(Color.BLACK); // if the boolean is true and the color changes to black
+        }
+            pen.drawOval(x[i],y[i],sizeofShape[i],sizeofShape[i]); // creates the border
+
+
+    
+    }
+
+    public static void showSquare(DrawingPanel panel, boolean fal, int i){
+        Graphics pen= panel.getGraphics();
+        pen.fillRect(x[i],y[i],sizeofShape[i],sizeofShape[i]); // it creates the square depending on the width and height
+        if(fal==true){
+            pen.setColor(Color.BLACK); // if the boolean is true and the color changes to black
+        }
+            pen.drawRect(x[i],y[i],sizeofShape[i],sizeofShape[i]); //. creates the border
+        
+    }
+
+    public static void showShapes(boolean fal,DrawingPanel panel){
+        Graphics pen=panel.getGraphics(); // initalized Graphics method
+        for(int i=0;i<numofShapes;++i){
+            if(fal){ // the boolean gets received from the method call
+                graphicsSetColor(panel,i); // this method  gives the colors to the shapes depending on what color is inputed
+            }
+            else{
+                setNoColor(panel); // this method just does a background color
+
+            }
+            switch(storeShapes[i]){
+
+                case "Square":
+                    showSquare(panel,fal,i); // calls showSquare method so that the square appears on the panel
+                    break;
+                case "Circle":
+                    showCircle(panel,i,fal); // calls the showCircle method so that the circle appears on the panel
+                    break;
+
+
+            }
+        }
+    }
+
+
+    public static void setNoColor(DrawingPanel panel){
+        Graphics pen=panel.getGraphics();
+        Color color=new Color(255,0,123);
+        pen.setColor(Color.WHITE);
+
+
+    }
+    public static void graphicsSetColor(DrawingPanel panel,int i){
+        Graphics pen = panel.getGraphics(); // initalizes get Graphics method
+        int counter=1;
+        switch(colors[i]){ // checks the input color and calls it in the pen.setColor method
+            case "Red": pen.setColor(Color.RED);
+                break;
+            case "Blue":pen.setColor(Color.BLUE);
+                break;
+            case "Pink":pen.setColor(Color.PINK);
+                break;
+            case "Yellow" :pen.setColor(Color.YELLOW);
+                break;
+            case "Green" :pen.setColor(Color.GREEN);
+                break;
+            case "Magenta" :pen.setColor(Color.MAGENTA);
+                break;
+            case "Cyan" :pen.setColor(Color.CYAN);
+                break;
+            case "Orange":pen.setColor(Color.ORANGE);
+                break;
+            case "Dark_gray":pen.setColor(Color.DARK_GRAY);
+                break;
+            case "Light_gray":pen.setColor(Color.LIGHT_GRAY);
+                break;
+            case "Gray": pen.setColor(Color.GRAY);
+                break;
+            default:pen.setColor(Color.BLACK);
+        }
+    }
+    public static void initalPosition(DrawingPanel panel){
+        for(int i=0;i<numofShapes;++i){
+            x[i]= (panel.getWidth() /2)-(sizeofShape[i]/2); // it takes the panel width and subracts the shape's width to get inital x
+            y[i]= (panel.getHeight() /2)-(sizeofShape[i]/2); // it takes the panel height and subracts the shape's height to get intial y
+        }
+        showShapes(true,panel);// calls the showShapes method with the boolean and panel
+        panel.sleep(10); // the delay fo 1/10 second
+    }
+    public static void getShapeInformation(){
+        int i =0;
+        for(i=0;i < numofShapes;++i){ // the loop so that they can be multiple shapes, colors, direction, and speed inputed
+            storeShapes[i]=in.next(); // takes input for shape
+            sizeofShape[i]=in.nextInt(); // take input for width and height of shape
+            colors[i]=in.next(); //  takes input for colors
+            direction[i]=in.nextInt(); // takes input for directions
+            speed[i]=in.nextInt(); // takes input for speed
+    
+            }
+        }
+
+
+
+
+    public static void main(String args[]){
+        System.out.println("UTSA - Fall 2021 - CS1083 - Section 002 - Project 3 - written by Navtej Dharmapuri Thirumala");
+        System.out.println("Please input width, height of the panel,# of shapes , # of times to move followed by shape, size, color,");
+        System.out.print("orientation, and speed of every shape:");
+        int width=in.nextInt(); // takes input for width
+        int height=in.nextInt(); // takes input for height
+        numofShapes=in.nextInt(); // takes input for Shapes
+        numofTimes=in.nextInt(); // takes input for the amount of times that the shapes are going to movement for 
+        getShapeInformation(); // calls getshapeInformation
+        DrawingPanel panel= new DrawingPanel(width,height); // initialize drawingpanel
+        initalPosition(panel); // calls the initalPosition method with the panel
+        showShapesMoving(panel); // calls the showShapesMoving method with the panel 
+    }
+
+
+
+}
